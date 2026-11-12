@@ -92,7 +92,8 @@ export function createTokenVerifier(opts: TokenVerifierOptions): (token: string)
   const now = opts.now ?? Date.now;
   const ttlMs = opts.ttlMs ?? 60_000;
   const maxEntries = opts.maxEntries ?? 256;
-  const timeoutMs = opts.timeoutMs ?? 5_000;
+  // The health server sleeps when idle on Railway; leave room for it to wake.
+  const timeoutMs = opts.timeoutMs ?? 15_000;
   const cache = new Map<string, { userId: string; until: number }>();
 
   return async (token) => {
